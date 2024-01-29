@@ -15,9 +15,6 @@ const CartDescriptionCard: React.FC<CartDescriptionCardProps> = ({
   const { items, getTotalCartValue, removeItem, getNumberOfItems } =
     useContext(CartContext);
 
-  useEffect(() => {
-    console.log(items);
-  }, [items]);
 
   const handleRemoveFromCart = (movie: Movie) => {
     removeItem(movie);

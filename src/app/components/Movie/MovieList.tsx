@@ -10,10 +10,13 @@ const MovieList: React.FC<MovieListProps> = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [visibleMovies, setVisibleMovies] = useState<number>(8);
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
+  const [showLessButton, setShowLessButton] = useState<boolean>(false);
+  
 
   useEffect(() => {
     setMovies(moviesData.moviesData || []);
-  }, []);
+    setShowLessButton(visibleMovies >= (moviesData.moviesData || []).length);
+  }, [visibleMovies, moviesData.moviesData]);
 
   const handleLoadMore = () => {
     setIsLoadingMore(true);
@@ -30,6 +33,13 @@ const MovieList: React.FC<MovieListProps> = () => {
     }, 1000);
   };
 
+  const handleShowLess = () => {
+    setVisibleMovies((prevVisibleMovies) =>
+      Math.max(prevVisibleMovies - 12, 8)
+    );
+    setShowLessButton((prevShowLessButton) => !prevShowLessButton);
+  };
+
   return (
     <>
       <div className="w-full py-10 px-28 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
@@ -37,8 +47,8 @@ const MovieList: React.FC<MovieListProps> = () => {
           <MovieCard key={movie.id} movie={movie} />
         ))}
       </div>
-      {visibleMovies < movies.length && (
-        <div className="flex justify-center my-4">
+      <div className="flex justify-center my-4">
+        {visibleMovies < movies.length && (
           <button
             className="border-2 border-gray-600 text-white py-3 px-12 font-semibold rounded-md"
             onClick={handleLoadMore}
@@ -46,8 +56,16 @@ const MovieList: React.FC<MovieListProps> = () => {
           >
             {isLoadingMore ? "Loading..." : "Load More Movies"}
           </button>
-        </div>
-      )}
+        )}
+        {showLessButton && (
+          <button
+            className="border-2 border-gray-600 text-white py-3 px-12 font-semibold rounded-md ml-4"
+            onClick={handleShowLess}
+          >
+            Show Less
+          </button>
+        )}
+      </div>
     </>
   );
 };

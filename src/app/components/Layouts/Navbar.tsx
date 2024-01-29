@@ -27,9 +27,6 @@ const Navbar = () => {
           />
         </button>
         <CartButton  />
-
-
-      
         <button>
           <CgProfile className="w-6 h-6" style={{ color: "#71717a" }} />
         </button>
